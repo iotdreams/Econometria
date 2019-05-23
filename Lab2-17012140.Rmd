@@ -1,12 +1,12 @@
 ---
-title: "R Notebook"
+title: "Notebook: Laboratorio 2 de Econometría"
 output: html_notebook
 ---
 
 ```{r}
 ## instalacion de librerias
-install.packages("corrplot")
-install.packages("matlib")
+## install.packages("corrplot")
+## install.packages("matlib")
 
 ```
 
@@ -33,8 +33,8 @@ colnames(dataset) <- titulos
 
 ## Separacion de datos
 
-y<- dataset$serie
-variables<- dataset[2:4]
+y<- dataset$serie  ## Se obtiene el vector 
+variables<- dataset[2:4]  ## conjunto de demas variables
 
 ##Prints
 y
@@ -46,34 +46,50 @@ variables
 ## len del dataset
 tamanio<- nrow(dataset)
 
-# matriz i
-I = data.matrix(rep(1,tamanio)) 
-k=cbind(I,variables)
+# matriz de Identidad en base al tamanio
+identidad = data.matrix(rep(1,tamanio)) 
+k <- cbind(identidad,variables)
 
-
+## Se agrega columna de unos a las variables.
 variables <-  as.matrix(k) 
 
 # Resolviendo la ecuacion
-parametros<- solve((t(variables)%*%variables)) %*% t(variables)%*%y 
+parametros <- solve((t(variables)%*%variables)) %*% t(variables)%*%y 
 parametros
 ```
 
 
 ```{r}
 ## encontrando perturbaciones
-
 e= y - variables%*%parametros
-head(e)
-dim(e)
 ```
 
 ```{r}
-I2<- diag(1, nrow=tamanio)
-Mo <-  I- (1/tamanio) * I  %*% t(I)
-R2<- 1- (t(e)%*% e)/(t(y)%*%Mo%*%y)
-R2
+ii <- diag(1, nrow=tamanio)
+
+# Utilizando la ecuacion 
+Mo <-  ii - (1/tamanio) * identidad  %*% t(identidad)
+
+# coeficiente
+coeficienteR2 <- 1- (t(e) %*% e)/(t(y)%*%Mo%*%y)
+coeficienteR2
 ```
 
+
+
+Comparando contra el modelo utilizado por la función nativa de R
+```{r}
+lmR = lm(data=dataset,formula = dataset$serie~dataset$gre + dataset$toefl+dataset$raiting)
+summary(lmR)
+
 ```
+
+
+
+
+
+#######################################################################
+### Conclusión:   Se logra definir el modelo por medio de matrices.
+#######################################################################
 
 
