@@ -1,0 +1,79 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+## instalacion de librerias
+install.packages("corrplot")
+install.packages("matlib")
+
+```
+
+
+```{r}
+## Import de librerias a utilizar
+
+library(dplyr)
+library(ggplot2)
+library(matlib)
+library(corrplot)
+library(magrittr)
+
+```
+
+
+
+```{r}
+## Carga de datos desde el .csv
+dataset<-read.csv("Admission_Predict_Ver1.1.csv")
+titulos<-c("serie","gre","toefl", "raiting","sop","lor","gcpa","reser","chance")
+
+colnames(dataset) <- titulos
+
+## Separacion de datos
+
+y<- dataset$serie
+variables<- dataset[2:4]
+
+##Prints
+y
+variables
+
+```
+
+```{r}
+## len del dataset
+tamanio<- nrow(dataset)
+
+# matriz i
+I = data.matrix(rep(1,tamanio)) 
+k=cbind(I,variables)
+
+
+variables <-  as.matrix(k) 
+
+# Resolviendo la ecuacion
+parametros<- solve((t(variables)%*%variables)) %*% t(variables)%*%y 
+parametros
+```
+
+
+```{r}
+## encontrando perturbaciones
+
+e= y - variables%*%parametros
+head(e)
+dim(e)
+```
+
+```{r}
+I2<- diag(1, nrow=tamanio)
+Mo <-  I- (1/tamanio) * I  %*% t(I)
+R2<- 1- (t(e)%*% e)/(t(y)%*%Mo%*%y)
+R2
+```
+
+```
+
+
