@@ -1,7 +1,7 @@
----
-title: "Notebook: Laboratorio 2 de Econometría"
-output: html_notebook
----
+### Erick Pineda Amézquita
+### 17012140
+
+
 
 ```{r}
 ## instalacion de librerias
@@ -10,22 +10,18 @@ output: html_notebook
 
 ```
 
-
-```{r}
 ## Import de librerias a utilizar
-
+```{r}
 library(dplyr)
 library(ggplot2)
 library(matlib)
 library(corrplot)
 library(magrittr)
-
 ```
 
 
-
-```{r}
 ## Carga de datos desde el .csv
+```{r}
 dataset<-read.csv("Admission_Predict_Ver1.1.csv")
 titulos<-c("serie","gre","toefl", "raiting","sop","lor","gcpa","reser","chance")
 
@@ -42,6 +38,7 @@ variables
 
 ```
 
+#### Creación del modelo por medio de matrices
 ```{r}
 ## len del dataset
 tamanio<- nrow(dataset)
@@ -58,9 +55,8 @@ parametros <- solve((t(variables)%*%variables)) %*% t(variables)%*%y
 parametros
 ```
 
-
-```{r}
 ## encontrando perturbaciones
+```{r}
 e= y - variables%*%parametros
 ```
 
@@ -87,9 +83,10 @@ summary(lmR)
 
 
 
-
+# Conclusión:   
 #######################################################################
-### Conclusión:   Se logra definir el modelo por medio de matrices.
+### Se logra obtener los mismos coeficientes tanto en el modelo 
+### realizado manualmente con matrices como en el modelo por medio de lm()
 #######################################################################
 
 
